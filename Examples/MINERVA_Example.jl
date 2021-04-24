@@ -4,7 +4,7 @@
 cd(@__DIR__)
 using Pkg
 Pkg.activate("..")
-using GlobalMatchingModels, Plots, Random
+using GlobalMatchingModels, StatsPlots, Random
 include("MINERVA_Functions.jl")
 Random.seed!(356355)
 #####################################################################################################
@@ -18,8 +18,9 @@ sim_data = mapreduce(x->simulate(model, 4, 5), hcat, 1:10000)'
 #                                      Plot Simulation
 #####################################################################################################
 pyplot()
-histogram(sim_data, alpha=.6, grid=false, norm=true, legendtitle="frequency", label=[0:5;]',
-    xaxis=font(12), yaxis=font(12), xlabel="Echo Intensity", ylabel="Density", size=(600,300))
+density(sim_data, alpha=.9, grid=false, norm=true, legendtitle="Frequency", label=[0:5;]',
+    legendtitlefontsize=9, xaxis=font(12), yaxis=font(12), xlabel="Echo Intensity", ylabel="Density", 
+    bins=50, size=(600,300))
 savefig("MINERVA.png")
 
 # function noise_distribution(model, stimuli, probe, n_sim)

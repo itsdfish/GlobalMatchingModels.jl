@@ -55,8 +55,10 @@ function encode!(model, stimuli)
     return nothing
 end
 
-function compute_intensity(model, probe)
-    return sum(activation(model.memory, probe))
+compute_intensity(model::MINERVA, probe) = compute_intensity(model.memory, probe)
+
+function compute_intensity(memory, probe)
+    return sum(activation(memory, probe))
 end
 
 activation(M, p) = similarity(M, p) .^ 3
