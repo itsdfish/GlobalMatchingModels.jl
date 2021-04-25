@@ -17,7 +17,7 @@ using SafeTestsets
     include("../Examples/MINERVA_Functions.jl")
     Random.seed!(1125435)
     # initialize model
-    model = MINERVA(h=.75, n_features=20, n_traces=60, L=.50)
+    model = MINERVA(n_features=20, n_traces=60, L=.50)
     # simulate experiment
     sim_data = mapreduce(x->simulate(model, 4, 5), hcat, 1:20000)'
     means = mean(sim_data, dims=1)

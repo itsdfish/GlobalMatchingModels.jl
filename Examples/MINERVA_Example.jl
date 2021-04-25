@@ -11,7 +11,7 @@ Random.seed!(356355)
 #                                        Specify  Model and Simulate Experiment
 #####################################################################################################
 # initialize model
-model = MINERVA(h=.75, n_features=20, n_traces=60, L=.50)
+model = MINERVA(n_features=20, n_traces=60, L=.50)
 # simulate experiment
 sim_data = mapreduce(x->simulate(model, 4, 5), hcat, 1:10000)'
 #####################################################################################################
@@ -20,7 +20,7 @@ sim_data = mapreduce(x->simulate(model, 4, 5), hcat, 1:10000)'
 pyplot()
 density(sim_data, alpha=.9, grid=false, norm=true, legendtitle="Frequency", label=[0:5;]',
     legendtitlefontsize=9, xaxis=font(12), yaxis=font(12), xlabel="Echo Intensity", ylabel="Density", 
-    bins=50, size=(600,300))
+    linewidth=1.5, bins=50, size=(600,300))
 savefig("MINERVA.png")
 
 # function noise_distribution(model, stimuli, probe, n_sim)
