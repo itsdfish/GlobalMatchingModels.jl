@@ -54,7 +54,7 @@ random_stimulus(n, n_features) = rand(-1:1, n, n_features)
 
 random_distractor(model::MINERVA) = random_stimulus(model::MINERVA)
 
-function encode(model, x)
+function encode(model::MINERVA, x)
     x == 0 ? (return 0) : nothing
     rand() <= model.L ? (return x) : (return 0)
 end
@@ -68,7 +68,7 @@ Encodes a matrix of stimuli with accuracy governed by parameter `L`
 * `stimuli`: a matrix in which rows represent stimuli and columns represent features
 
 """
-function encode!(model, stimuli)
+function encode!(model::MINERVA, stimuli)
     model.memory .= encode.(model, stimuli)
     return nothing
 end
@@ -85,11 +85,11 @@ Computes echo intensity using a given memory `probe`.
 compute_intensity(model::MINERVA, probe) = compute_intensity(model.memory, probe)
 
 function compute_intensity(memory, probe)
-    return sum(activation(memory, probe))
+    return sum(compute_activation(memory, probe))
 end
 
 """
-    activation(M, p)
+    compute_activation(M, p)
 
 Computes activation value for each trace in matrix `M` for a given probe `p`. 
 
@@ -97,18 +97,17 @@ Computes activation value for each trace in matrix `M` for a given probe `p`.
 * `p`: a vector of feature values representing a memory probe
 
 """
-activation(M, p) = similarity(M, p) .^ 3
+compute_activation(M, p) = compute_similarity(M, p) .^ 3
 
 """
-    activation(M, p)
+    compute_activation(M, p)
 
 Computes simularity between memory traces in matrix `M` and memory probe `p` using the dot product. 
 
 * `M`: a matrix in which rows represent memory traces and columns represent feature values
 * `p`: a vector of feature values representing a memory probe
-
 """
-function similarity(M, p)
+function compute_similarity(M, p)
     s = M * p
     n = length(p) .- sum((M .== 0) * (p .== 0), dims=2)
     return s ./ n
