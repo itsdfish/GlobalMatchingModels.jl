@@ -7,7 +7,7 @@ A REM model object containing a memory array and parameters.
 - `memory::AbstractArray`: An array of item representations.
 - `u::Float64`: Probability (between 0 and 1) that a given feature of an item is
     copied into LTM.
-- `c::Float64`: Probability (between 0 and 1) that a given feature of ann item is
+- `c::Float64`: Probability (between 0 and 1) that a given feature of an item is
     copied *correctly* into LTM. 1 - c probability of a feature being converted
     to a different integer sampled from geometric distribution.
 - `g::Float64`: Probability of sample integers from a geometric distribution.
@@ -76,7 +76,7 @@ Encodes a degraded copy of stimuli into memory.
 - `memory::AbstractArray`: A vector or matrix of item representations. 
 - `u::Float64`: Probability (between 0 and 1) that a given feature of an item is
     copied into LTM.
-- `c::Float64`: Probability (between 0 and 1) that a given feature of ann item is
+- `c::Float64`: Probability (between 0 and 1) that a given feature of an item is
     copied *correctly* into LTM. 1 - c probability of a feature being converted
     to a different integer sampled from geometric distribution.
 - `g::Float64`: Probability of sample integers from a geometric distribution.
