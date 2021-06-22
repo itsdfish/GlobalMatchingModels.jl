@@ -167,7 +167,7 @@ function compute_ratio(m_feature, p_feature, g, c)
     m_feature == 0 ? (return 1.0) : nothing
     m_feature != p_feature ? (return 1 - c) : nothing 
     denom = g * (1 - g)^(m_feature - 1)
-    return (c + (1 - c)*denom) / denom
+    return (c + (1 - c) * denom) / denom
 end
 
 """
