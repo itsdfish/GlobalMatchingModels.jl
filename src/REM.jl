@@ -1,3 +1,4 @@
+abstract type AbstractREM end
 """
     REM(;memory, u=.9, c=.6, g=.4, n_steps=1)
 
@@ -25,7 +26,7 @@ Shiffrin, R. M., & Steyvers, M. (1997). A model for recognition memory:
 @coauthor itsdfish 
 @date 06/18/2021
 """
-mutable struct REM{T}
+mutable struct REM{T} <: AbstractREM
     memory::T
     u::Float64
     c::Float64
@@ -97,7 +98,7 @@ julia> encode!(model, stimuli)
  0  0  0   0
 ```
 """
-function encode!(model::REM, stimuli)
+function encode!(model::AbstractREM, stimuli)
     @unpack memory,u,c,g,n_steps = model
     memory .= stimuli
     memory .= encode_element.(memory, u, c, g, n_steps)
@@ -145,7 +146,7 @@ julia> compute_activations(model, probe)
   0.18450000000000003
 ```
 """
-function compute_activations(model::REM, probe)
+function compute_activations(model::AbstractREM, probe)
     @unpack memory,g,c = model 
     _,n_cols = size(memory) 
     ratios = fill(0.0, n_cols)

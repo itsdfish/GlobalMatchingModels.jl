@@ -1,5 +1,7 @@
+abstract type AbstractMINERVA end
+
 """
-    MINERVA(;L=.8, s=.9, N=10, S=20, h=.8, c=0)
+    MINERVA(;L=.8, n_features=10, n_traces=20, c=[0.0])
 
 Model object for the MINERVA model model. 
 
@@ -8,14 +10,14 @@ Parameters
 * `memory`: a matrix containing memory traces where each row corresponds to a trace
 * `n_features`: the number of features per trace
 * `n_traces`: the number of traces in model
-* `c`: decision criteria
+* `c`: a vector of decision criteria
 
 **References**
 
 Hintzman, D. L. (1988). Judgments of frequency and recognition model in a multiple-trace model model. 
     Psychological Review, 95(4), 528.
 """
-mutable struct MINERVA
+mutable struct MINERVA <: AbstractMINERVA
     L::Float64
     memory::Array{Int,2}
     n_features::Int
@@ -35,26 +37,26 @@ function stimulus_similarity(model, p)
 end
 
 """
-    random_stimulus(model::MINERVA)
+    random_stimulus(model::AbstractMINERVA)
 
 Generates random stimulus with a specified number of features in the `model` object. 
 """
-random_stimulus(model::MINERVA) = random_stimulus(model.n_features)
+random_stimulus(model::AbstractMINERVA) = random_stimulus(model.n_features)
 random_stimulus(n_features) = rand(-1:1, n_features)
 
 """
-    random_stimulus(model::MINERVA, n)
+    random_stimulus(model::AbstractMINERVA, n)
 
 Generates `n` random stimuli with a specified number of features in model object. Returns a `n` by 
 `n_features` matrix. 
 """
-random_stimulus(model::MINERVA, n) = random_stimulus(n, model.n_features)
-random_stimulus(n, n_features) = rand(-1:1, n, n_features)
+random_stimulus(model::AbstractMINERVA, n) = random_stimulus(n, model.n_features)
+random_stimulus(n_traces, n_features) = rand(-1:1, n_traces, n_features)
 
 
-random_distractor(model::MINERVA) = random_stimulus(model::MINERVA)
+random_distractor(model::AbstractMINERVA) = random_stimulus(model::AbstractMINERVA)
 
-function encode(model::MINERVA, x)
+function encode(model::AbstractMINERVA, x)
     x == 0 ? (return 0) : nothing
     rand() <= model.L ? (return x) : (return 0)
 end
@@ -68,13 +70,13 @@ Encodes a matrix of stimuli with accuracy governed by parameter `L`
 * `stimuli`: a matrix in which rows represent stimuli and columns represent features
 
 """
-function encode!(model::MINERVA, stimuli)
+function encode!(model::AbstractMINERVA, stimuli)
     model.memory .= encode.(model, stimuli)
     return nothing
 end
 
 """
-    compute_intensity(model::MINERVA, probe)
+    compute_intensity(model::AbstractMINERVA, probe)
 
 Computes echo intensity using a given memory `probe`. 
 
@@ -82,7 +84,7 @@ Computes echo intensity using a given memory `probe`.
 * `probe`: a vector of feature values representing a memory probe
 
 """
-compute_intensity(model::MINERVA, probe) = compute_intensity(model.memory, probe)
+compute_intensity(model::AbstractMINERVA, probe) = compute_intensity(model.memory, probe)
 
 function compute_intensity(memory, probe)
     return sum(compute_activation(memory, probe))
